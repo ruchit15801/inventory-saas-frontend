@@ -17,15 +17,6 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState(localStorage.getItem('token'));
 
-    useEffect(() => {
-        if (token) {
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            fetchUser();
-        } else {
-            setLoading(false);
-        }
-    }, [token]);
-
     const fetchUser = async () => {
         try {
             setLoading(false);
@@ -33,6 +24,16 @@ export const AuthProvider = ({ children }) => {
             logout();
         }
     };
+
+    useEffect(() => {
+        if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            fetchUser();
+        } else {
+            setLoading(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     const login = async (email, password) => {
         try {
